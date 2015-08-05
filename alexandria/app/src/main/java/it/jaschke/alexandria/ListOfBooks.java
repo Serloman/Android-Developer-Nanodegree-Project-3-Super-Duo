@@ -22,6 +22,12 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static ListOfBooks newInstance(){
+        ListOfBooks fragment = new ListOfBooks();
+
+        return fragment;
+    }
+
     private BookListAdapter bookListAdapter;
     private ListView bookList;
     private int position = ListView.INVALID_POSITION;

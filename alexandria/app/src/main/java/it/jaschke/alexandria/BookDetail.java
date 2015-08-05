@@ -25,6 +25,16 @@ import it.jaschke.alexandria.services.DownloadImage;
 
 public class BookDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static BookDetail newInstance(String ean){
+        BookDetail fragment = new BookDetail();
+
+        Bundle args = new Bundle();
+        args.putString(BookDetail.EAN_KEY, ean);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     public static final String EAN_KEY = "EAN";
     private final int LOADER_ID = 10;
     private View rootView;

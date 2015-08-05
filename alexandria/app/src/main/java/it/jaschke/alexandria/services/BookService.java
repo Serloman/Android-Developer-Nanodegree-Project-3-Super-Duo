@@ -2,11 +2,15 @@ package it.jaschke.alexandria.services;
 
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,6 +94,13 @@ public class BookService extends IntentService {
         }
 
         bookEntry.close();
+
+        try{
+            checkNetwork();
+        } catch (IOException e) {
+            Toast.makeText(getBaseContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -196,7 +207,8 @@ public class BookService extends IntentService {
                 writeBackCategories(ean,bookInfo.getJSONArray(CATEGORIES) );
             }
 
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             Log.e(LOG_TAG, "Error ", e);
         }
     }
@@ -229,5 +241,13 @@ public class BookService extends IntentService {
             getContentResolver().insert(AlexandriaContract.CategoryEntry.CONTENT_URI, values);
             values= new ContentValues();
         }
+    }
+
+    private void checkNetwork() throws IOException {
+        ConnectivityManager manager = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);;
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        if(!(networkInfo!=null && networkInfo.isConnected() && networkInfo.isAvailable()))
+            throw new IOException("Network not available");
     }
  }

@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import it.jaschke.alexandria.api.Callback;
 
-
+@Deprecated
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, Callback {
 
     /**
@@ -134,11 +134,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     @Override
     public void onItemSelected(String ean) {
-        Bundle args = new Bundle();
-        args.putString(BookDetail.EAN_KEY, ean);
 
-        BookDetail fragment = new BookDetail();
-        fragment.setArguments(args);
+        BookDetail fragment = BookDetail.newInstance(ean);
 
         int id = R.id.container;
         if(findViewById(R.id.right_container) != null){
