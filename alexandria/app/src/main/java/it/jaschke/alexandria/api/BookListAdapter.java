@@ -4,11 +4,14 @@ package it.jaschke.alexandria.api;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import it.jaschke.alexandria.R;
 import it.jaschke.alexandria.data.AlexandriaContract;
@@ -42,7 +45,9 @@ public class BookListAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         String imgUrl = cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        new DownloadImage(viewHolder.bookCover).execute(imgUrl);
+//        new DownloadImage(viewHolder.bookCover).execute(imgUrl);
+        if(Patterns.WEB_URL.matcher(imgUrl).matches())
+            Picasso.with(context).load(imgUrl).into(viewHolder.bookCover);
 
         String bookTitle = cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
         viewHolder.bookTitle.setText(bookTitle);

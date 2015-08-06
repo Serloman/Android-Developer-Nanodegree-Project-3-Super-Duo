@@ -9,10 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import it.jaschke.alexandria.api.Callback;
+
 /**
  * Created by Serloman on 05/08/2015.
  */
-public class NewMainActivity extends AppCompatActivity{
+public class NewMainActivity extends AppCompatActivity implements Callback{
 
     private static final int REQUEST_ADD_BOOK = 27;
 
@@ -88,5 +90,12 @@ public class NewMainActivity extends AppCompatActivity{
         return (getApplicationContext().getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    @Override
+    public void onItemSelected(String ean) {
+        Intent openBookDetailsIntent = new Intent(this, BookDetailActivity.class);
+        openBookDetailsIntent.putExtra(BookDetailActivity.ARG_EAN, ean);
+        startActivity(openBookDetailsIntent);
     }
 }

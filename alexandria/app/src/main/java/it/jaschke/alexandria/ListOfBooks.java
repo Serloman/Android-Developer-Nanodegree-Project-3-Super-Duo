@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import it.jaschke.alexandria.api.BookListAdapter;
@@ -29,7 +30,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     }
 
     private BookListAdapter bookListAdapter;
-    private ListView bookList;
+    private GridView bookList;
     private int position = ListView.INVALID_POSITION;
     private EditText searchText;
 
@@ -67,7 +68,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                 }
         );
 
-        bookList = (ListView) rootView.findViewById(R.id.listOfBooks);
+        bookList = (GridView) rootView.findViewById(R.id.listOfBooks);
         bookList.setAdapter(bookListAdapter);
 
         bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,8 +77,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = bookListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    ((Callback)getActivity())
-                            .onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
+                    ((Callback)getActivity()).onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
                 }
             }
         });

@@ -10,4 +10,15 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
 
     <dimen name="single_item_margin">16dp</dimen>
+
+
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_round">4dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
+
+    <dimen name="book_cover_height">86dp</dimen>
+    <dimen name="book_cover_width">60dp</dimen>
+
+    <dimen name="book_details_cover_height">120dp</dimen>
+    <dimen name="book_details_cover_width">80dp</dimen>
 </resources>

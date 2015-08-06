@@ -1,46 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="?android:attr/listPreferredItemHeight"
-                android:padding="6dip" >
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/fullBookCover"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
-        android:contentDescription="@string/book_cover"
-        android:src="@drawable/ic_launcher" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/listBookTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/fullBookCover"
-        android:gravity="center_vertical"
-        android:ellipsize="end"
-        android:layout_marginRight="10dp"
-        android:maxLines="1"
-        android:textSize="16sp" />
+            <ImageView
+                android:id="@+id/fullBookCover"
+                android:layout_width="@dimen/book_cover_width"
+                android:layout_height="@dimen/book_cover_height"
+                android:contentDescription="@string/book_cover"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="@dimen/single_item_margin"
+                android:layout_marginBottom="@dimen/card_margin" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/listBookTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                    android:ellipsize="end"
+                    android:text="Title"
+                    android:lines="2"
+                    android:paddingLeft="@dimen/single_item_margin"
+                    android:paddingRight="@dimen/single_item_margin"
+                    android:paddingBottom="@dimen/single_item_margin"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/listBookSubTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                    android:padding="@dimen/single_item_margin"
+                    android:text="Subtitle"
+                    android:gravity="bottom"
+                    android:visibility="gone" />
+            </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/listBookSubTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:singleLine="true"
-        android:textSize="12sp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/fullBookCover"
-        android:layout_toEndOf="@+id/fullBookCover"/>
+        </LinearLayout>
 
-
-</RelativeLayout>
+</FrameLayout>

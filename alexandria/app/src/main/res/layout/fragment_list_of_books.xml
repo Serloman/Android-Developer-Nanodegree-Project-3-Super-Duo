@@ -33,7 +33,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"/>
 
-
+<!--
         <ListView android:id="@+id/listOfBooks"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
@@ -43,8 +43,19 @@
                   android:layout_alignRight="@id/searchButton"
                   android:layout_alignParentRight="true"
                   android:layout_alignParentStart="true"
-                  android:layout_toRightOf="@id/searchButton"/>
-
+                  android:layout_toRightOf="@id/searchButton" />
+-->
+        <GridView android:id="@+id/listOfBooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_below="@+id/searchText"
+            android:layout_alignRight="@id/searchButton"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_toRightOf="@id/searchButton"
+            android:numColumns="1" />
 
 
     </RelativeLayout>
