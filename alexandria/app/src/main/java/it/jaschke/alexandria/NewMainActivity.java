@@ -1,11 +1,17 @@
 package it.jaschke.alexandria;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,9 +33,19 @@ public class NewMainActivity extends AppCompatActivity implements Callback{
         init();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            initListOfBooks(query);
+        }
+    }
+
     private void init(){
         initToolbar();
-        initListOfBooks();
+        initListOfBooks("");
         initAddBooks();
     }
 
@@ -40,8 +56,8 @@ public class NewMainActivity extends AppCompatActivity implements Callback{
         this.setSupportActionBar(toolbar);
     }
 
-    private void initListOfBooks(){
-        ListOfBooks fragment = ListOfBooks.newInstance();
+    private void initListOfBooks(String query){
+        ListOfBooks fragment = ListOfBooks.newInstance(query);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
@@ -97,5 +113,32 @@ public class NewMainActivity extends AppCompatActivity implements Callback{
         Intent openBookDetailsIntent = new Intent(this, BookDetailActivity.class);
         openBookDetailsIntent.putExtra(BookDetailActivity.ARG_EAN, ean);
         startActivity(openBookDetailsIntent);
+    }
+
+    // Example from http://stackoverflow.com/questions/27378981/how-to-use-searchview-in-toolbar-android
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+/**/
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) NewMainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(NewMainActivity.this.getComponentName()));
+        }
+/**/
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

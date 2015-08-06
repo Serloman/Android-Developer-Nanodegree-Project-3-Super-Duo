@@ -23,8 +23,14 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static ListOfBooks newInstance(){
+    public static final String ARG_QUERY = "ARG_QUERY";
+
+    public static ListOfBooks newInstance(String query){
         ListOfBooks fragment = new ListOfBooks();
+
+        Bundle args = new Bundle();
+        args.putString(ARG_QUERY, query);
+        fragment.setArguments(args);
 
         return fragment;
     }
@@ -58,6 +64,8 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
 
         bookListAdapter = new BookListAdapter(getActivity(), cursor, 0);
         View rootView = inflater.inflate(R.layout.fragment_list_of_books, container, false);
+
+/** /
         searchText = (EditText) rootView.findViewById(R.id.searchText);
         rootView.findViewById(R.id.searchButton).setOnClickListener(
                 new View.OnClickListener() {
@@ -67,6 +75,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                     }
                 }
         );
+/**/
 
         bookList = (GridView) rootView.findViewById(R.id.listOfBooks);
         bookList.setAdapter(bookListAdapter);
@@ -77,23 +86,31 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = bookListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    ((Callback)getActivity()).onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
+                    ((Callback) getActivity()).onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
                 }
             }
         });
 
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+
         return rootView;
     }
 
+/** /
     private void restartLoader(){
         getLoaderManager().restartLoader(LOADER_ID, null, this);
+    }
+/**/
+
+    private String getSearchQuery(){
+        return getArguments().getString(ARG_QUERY);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         final String selection = AlexandriaContract.BookEntry.TITLE +" LIKE ? OR " + AlexandriaContract.BookEntry.SUBTITLE + " LIKE ? ";
-        String searchString =searchText.getText().toString();
+        String searchString = getSearchQuery();
 
         if(searchString.length()>0){
             searchString = "%"+searchString+"%";
