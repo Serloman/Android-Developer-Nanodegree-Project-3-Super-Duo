@@ -39,6 +39,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private final String EAN_CONTENT="eanContent";
     private static final String SCAN_FORMAT = "scanFormat";
     private static final String SCAN_CONTENTS = "scanContents";
+    private final static int REQUEST_EAN_CODE = 1987;
 
     private String mScanFormat = "Format:";
     private String mScanContents = "Contents:";
@@ -95,19 +96,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         rootView.findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // This is the callback method that the system will invoke when your button is
-                // clicked. You might do this by launching another app or by including the
-                //functionality directly in this app.
-                // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
-                // are using an external app.
-                //when you're done, remove the toast below.
-                Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
+                scanBook();
             }
         });
 
@@ -135,6 +124,11 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         }
 
         return rootView;
+    }
+
+    private void scanBook(){
+        Intent scan = new Intent(getActivity(), ScanActivity.class);
+        startActivityForResult(scan, REQUEST_EAN_CODE);
     }
 
     private void restartLoader(){
@@ -208,5 +202,23 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activity.setTitle(R.string.scan);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode==Activity.RESULT_OK){
+            switch (requestCode){
+                case REQUEST_EAN_CODE:
+                    onCodeReceived(data);
+                    break;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void onCodeReceived(Intent data){
+        ean.setText(data.getExtras().getString(ScanActivity.ARG_EAN));
     }
 }

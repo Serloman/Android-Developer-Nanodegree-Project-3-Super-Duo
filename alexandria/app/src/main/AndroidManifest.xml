@@ -44,7 +44,8 @@
         <activity
             android:label="@string/scan"
             android:name=".AddBookActivity"
-            android:parentActivityName=".NewMainActivity" >
+            android:parentActivityName=".NewMainActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".NewMainActivity" />
@@ -57,6 +58,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".NewMainActivity" />
+        </activity>
+
+        <activity
+            android:label="@string/scan"
+            android:name=".ScanActivity"
+            android:parentActivityName=".NewMainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AddBookActivity" />
         </activity>
 
 

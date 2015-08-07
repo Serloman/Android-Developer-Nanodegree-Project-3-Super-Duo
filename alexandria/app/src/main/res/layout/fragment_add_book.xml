@@ -27,7 +27,9 @@
                 android:maxLength="@integer/ean_size"
                 android:maxLines="1"
                 android:hint="@string/input_hint"
-                android:paddingRight="20dp"/>
+                android:paddingRight="20dp"
+                android:textColor="#000"
+                android:textColorHint="#CCC" />
 
             <Button
                 android:layout_width="wrap_content"
