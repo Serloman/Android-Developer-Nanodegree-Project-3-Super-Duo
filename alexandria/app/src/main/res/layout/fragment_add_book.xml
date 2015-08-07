@@ -11,7 +11,14 @@
         android:orientation="vertical"
         tools:context="it.jaschke.alexandria.AddBook">
 
-            <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addBookToolbar"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/title_color" />
+
+        <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:id="@+id/eancontainer"
@@ -35,9 +42,20 @@
                     android:textColorHint="#CCC"
                     android:layout_weight="1" />
 
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/clearEan"
+                    android:layout_weight="0"
+                    android:src="@drawable/ic_action_remove"
+                    android:background="#0000"
+                    android:paddingLeft="@dimen/card_margin"
+                    android:paddingTop="@dimen/card_margin"
+                    android:paddingBottom="@dimen/card_margin" />
+
 
             </LinearLayout>
-
+<!--
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -70,7 +88,7 @@
                 />
 
         </LinearLayout>
-
+-->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">

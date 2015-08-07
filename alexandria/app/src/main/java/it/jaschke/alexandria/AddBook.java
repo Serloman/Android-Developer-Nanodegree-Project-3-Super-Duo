@@ -10,7 +10,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -48,6 +51,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private String mScanFormat = "Format:";
     private String mScanContents = "Contents:";
     private String eanData;
+    private Snackbar lastSnack;
 
     public AddBook(){
     }
@@ -79,18 +83,26 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
             @Override
             public void afterTextChanged(Editable s) {
-                String ean =s.toString();
-                //catch isbn10 numbers
-                if(ean.length()==10 && !ean.startsWith("978")){
-                    ean="978"+ean;
+                updateMaxLength(13);
+
+                if(lastSnack!=null) {
+                    lastSnack.dismiss();
+                    lastSnack = null;
                 }
-                if(ean.length()<13){
+
+                String eanData = s.toString();
+                //catch isbn10 numbers
+                if(eanData.length()==10 && !eanData.startsWith("978")){
+                    eanData="978"+eanData;
+                }
+                if(eanData.length()<13){
                     clearFields();
                     return;
                 }
+
                 //Once we have an ISBN, start a book intent
                 Intent bookIntent = new Intent(getActivity(), BookService.class);
-                bookIntent.putExtra(BookService.EAN, ean);
+                bookIntent.putExtra(BookService.EAN, eanData);
                 bookIntent.setAction(BookService.FETCH_BOOK);
                 getActivity().startService(bookIntent);
                 AddBook.this.restartLoader();
@@ -104,6 +116,13 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             }
         });
 
+        rootView.findViewById(R.id.clearEan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ean.setText("");
+            }
+        });
+/** /
         rootView.findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,13 +140,33 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 ean.setText("");
             }
         });
-
+/**/
         if(savedInstanceState!=null){
             ean.setText(savedInstanceState.getString(EAN_CONTENT));
             ean.setHint("");
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        initToolbar();
+    }
+
+    private void initToolbar(){
+        Toolbar toolbar = (Toolbar) getView().findViewById(R.id.addBookToolbar);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void updateMaxLength(int maxLength){
+        ean.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
     }
 
     private void scanBook(){
@@ -167,6 +206,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             return;
         }
 
+        updateMaxLength(ean.length());
+
         String bookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
         ((TextView) rootView.findViewById(R.id.fullBookTitle)).setText(bookTitle);
 
@@ -192,8 +233,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
         ((TextView) rootView.findViewById(R.id.categories)).setText(categories);
 
-        rootView.findViewById(R.id.save_button).setVisibility(View.VISIBLE);
-        rootView.findViewById(R.id.delete_button).setVisibility(View.VISIBLE);
+//        rootView.findViewById(R.id.save_button).setVisibility(View.VISIBLE);
+//        rootView.findViewById(R.id.delete_button).setVisibility(View.VISIBLE);
 
         showBookSnack(bookTitle, eanData);
     }
@@ -209,8 +250,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) rootView.findViewById(R.id.authors)).setText("");
         ((TextView) rootView.findViewById(R.id.categories)).setText("");
         rootView.findViewById(R.id.fullBookCover).setVisibility(View.INVISIBLE);
-        rootView.findViewById(R.id.save_button).setVisibility(View.INVISIBLE);
-        rootView.findViewById(R.id.delete_button).setVisibility(View.INVISIBLE);
+//        rootView.findViewById(R.id.save_button).setVisibility(View.INVISIBLE);
+//        rootView.findViewById(R.id.delete_button).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -240,15 +281,18 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private void showBookSnack(final String bookTitle, final String eanData){
         String message = getString(R.string.book_added);
 
-        Snackbar.make(rootView, message, Snackbar.LENGTH_INDEFINITE)
+        Snackbar bar = Snackbar.make(rootView, message, Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(R.string.cancel_button), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         cancelBook(eanData);
                     }
                 })
-                .setActionTextColor(Color.RED)
-                .show();
+                .setActionTextColor(Color.RED);
+        bar.getView().setBackgroundResource(R.color.title_color);
+        bar.show();
+
+        lastSnack = bar;
     }
 
     private void cancelBook(String eanData){
@@ -265,6 +309,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ean.setText("");
         clearFields();
 
-        Snackbar.make(rootView, getString(R.string.book_discarded), Snackbar.LENGTH_SHORT).show();
+        Snackbar bar = Snackbar.make(rootView, getString(R.string.book_discarded), Snackbar.LENGTH_SHORT);
+
+        bar.getView().setBackgroundResource(R.color.title_color);
+        bar.show();
     }
 }
