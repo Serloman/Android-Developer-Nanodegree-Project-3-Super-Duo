@@ -38,7 +38,6 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     private BookListAdapter bookListAdapter;
     private GridView bookList;
     private int position = ListView.INVALID_POSITION;
-    private EditText searchText;
 
     private final int LOADER_ID = 10;
 
@@ -65,18 +64,6 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         bookListAdapter = new BookListAdapter(getActivity(), cursor, 0);
         View rootView = inflater.inflate(R.layout.fragment_list_of_books, container, false);
 
-/** /
-        searchText = (EditText) rootView.findViewById(R.id.searchText);
-        rootView.findViewById(R.id.searchButton).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ListOfBooks.this.restartLoader();
-                    }
-                }
-        );
-/**/
-
         bookList = (GridView) rootView.findViewById(R.id.listOfBooks);
         bookList.setAdapter(bookListAdapter);
 
@@ -95,12 +82,6 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
 
         return rootView;
     }
-
-/** /
-    private void restartLoader(){
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
-    }
-/**/
 
     private String getSearchQuery(){
         return getArguments().getString(ARG_QUERY);
