@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -45,7 +47,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     private String mScanFormat = "Format:";
     private String mScanContents = "Contents:";
-
+    private String eanData;
 
     public AddBook(){
     }
@@ -146,6 +148,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         if(eanStr.length()==10 && !eanStr.startsWith("978")){
             eanStr="978"+eanStr;
         }
+
+        eanData = eanStr;
+
         return new CursorLoader(
                 getActivity(),
                 AlexandriaContract.BookEntry.buildFullBookUri(Long.parseLong(eanStr)),
@@ -179,10 +184,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
-//            new DownloadImage((ImageView) rootView.findViewById(R.id.bookCover)).execute(imgUrl);
-//            rootView.findViewById(R.id.bookCover).setVisibility(View.VISIBLE);
             ImageView cover = (ImageView) rootView.findViewById(R.id.fullBookCover);
             Picasso.with(getActivity()).load(imgUrl).into(cover);
+            cover.setVisibility(View.VISIBLE);
         }
 
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
@@ -190,6 +194,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
         rootView.findViewById(R.id.save_button).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.delete_button).setVisibility(View.VISIBLE);
+
+        showBookSnack(bookTitle, eanData);
     }
 
     @Override
@@ -229,5 +235,36 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     private void onCodeReceived(Intent data){
         ean.setText(data.getExtras().getString(ScanActivity.ARG_EAN));
+    }
+
+    private void showBookSnack(final String bookTitle, final String eanData){
+        String message = getString(R.string.book_added);
+
+        Snackbar.make(rootView, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.cancel_button), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cancelBook(eanData);
+                    }
+                })
+                .setActionTextColor(Color.RED)
+                .show();
+    }
+
+    private void cancelBook(String eanData){
+        Intent bookIntent = new Intent(getActivity(), BookService.class);
+        bookIntent.putExtra(BookService.EAN, eanData);
+        bookIntent.setAction(BookService.DELETE_BOOK);
+        getActivity().startService(bookIntent);
+        getActivity().getSupportFragmentManager().popBackStack();
+
+        showDiscardedToast();
+    }
+
+    private void showDiscardedToast(){
+        ean.setText("");
+        clearFields();
+
+        Snackbar.make(rootView, getString(R.string.book_discarded), Snackbar.LENGTH_SHORT).show();
     }
 }
