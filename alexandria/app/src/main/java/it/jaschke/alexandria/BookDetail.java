@@ -76,7 +76,8 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
 
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(!(getActivity() instanceof NewMainActivity))
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -148,7 +149,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
 //            new DownloadImage((ImageView) rootView.findViewById(R.id.fullBookCover)).execute(imgUrl);
             ImageView cover = (ImageView) rootView.findViewById(R.id.fullBookCover);
-            Picasso.with(getActivity()).load(imgUrl).into(cover);
+            Picasso.with(getActivity()).load(imgUrl).into(cover);   // Using Picasoo because it caches the images
             cover.setVisibility(View.VISIBLE);
         }
 

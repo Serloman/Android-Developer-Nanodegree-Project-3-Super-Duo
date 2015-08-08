@@ -69,6 +69,16 @@
                 android:value=".AddBookActivity" />
         </activity>
 
+        <activity
+            android:label="@string/about"
+            android:name=".AboutActivity"
+            android:theme="@style/Theme.Trasparent"
+            android:parentActivityName=".NewMainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NewMainActivity" />
+        </activity>
+
 
         <provider
             android:name=".data.BookProvider"

@@ -5,4 +5,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- From http://stackoverflow.com/questions/2176922/how-to-create-transparent-activity-in-android -->
+    <style name="Theme.Trasparent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>

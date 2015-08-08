@@ -19,6 +19,7 @@ import it.jaschke.alexandria.api.Callback;
 
 /**
  * Created by Serloman on 05/08/2015.
+ * Updated UI to implements Material Design
  */
 public class NewMainActivity extends AppCompatActivity implements Callback{
 
@@ -110,6 +111,19 @@ public class NewMainActivity extends AppCompatActivity implements Callback{
 
     @Override
     public void onItemSelected(String ean) {
+        if(isTabletLandMode())
+            showDetails(ean);
+        else
+            openDetails(ean);
+    }
+
+    private void showDetails(String ean){
+        BookDetail fragment = BookDetail.newInstance(ean);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainActivityDetailsContainer, fragment).commit();
+    }
+
+    private void openDetails(String ean){
         Intent openBookDetailsIntent = new Intent(this, BookDetailActivity.class);
         openBookDetailsIntent.putExtra(BookDetailActivity.ARG_EAN, ean);
         startActivity(openBookDetailsIntent);
@@ -139,6 +153,23 @@ public class NewMainActivity extends AppCompatActivity implements Callback{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()){
+            case R.id.action_about:
+                openAboutActivity();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private boolean isTabletLandMode(){
+        return findViewById(R.id.mainActivityDetailsContainer) != null;
+    }
+
+    private void openAboutActivity(){
+        Intent about = new Intent(this, AboutActivity.class);
+        startActivity(about);
     }
 }
