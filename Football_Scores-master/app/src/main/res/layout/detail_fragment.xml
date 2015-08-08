@@ -40,7 +40,8 @@
         android:drawableLeft="@android:drawable/ic_menu_share"
         android:paddingLeft="@dimen/paddingShareButton"
         android:paddingRight="@dimen/paddingShareButton"
-        android:drawableStart="@android:drawable/ic_menu_share" />
+        android:drawableStart="@android:drawable/ic_menu_share"
+        android:contentDescription="@string/share_match_info"/>
     </FrameLayout>
 
 </LinearLayout>

@@ -44,17 +44,34 @@ public class scoresAdapter extends CursorAdapter
     @Override
     public void bindView(View view, final Context context, Cursor cursor)
     {
+        String home = cursor.getString(COL_HOME);
+        String away = cursor.getString(COL_AWAY);
+        int homeGoals = cursor.getInt(COL_HOME_GOALS);
+        int awayGoals = cursor.getInt(COL_AWAY_GOALS);
+        String date = cursor.getString(COL_MATCHTIME);
+
         final ViewHolder mHolder = (ViewHolder) view.getTag();
-        mHolder.home_name.setText(cursor.getString(COL_HOME));
-        mHolder.away_name.setText(cursor.getString(COL_AWAY));
-        mHolder.date.setText(cursor.getString(COL_MATCHTIME));
-        mHolder.score.setText(Utilies.getScores(cursor.getInt(COL_HOME_GOALS),cursor.getInt(COL_AWAY_GOALS)));
+
+        mHolder.home_name.setText(home);
+        mHolder.home_name.setContentDescription(context.getString(R.string.home_name_dynamic_description) + home);
+
+        mHolder.away_name.setText(away);
+        mHolder.away_name.setContentDescription(context.getString(R.string.home_name_dynamic_description) + away);
+
+        mHolder.date.setText(date);
+        mHolder.date.setContentDescription(context.getString(R.string.date_dynamic_description) + date);
+
+        mHolder.score.setText(Utilies.getScores(homeGoals, awayGoals));
+        mHolder.score.setContentDescription(Utilies.getScores(home, homeGoals, away, awayGoals));
+
         mHolder.match_id = cursor.getDouble(COL_ID);
-        mHolder.home_crest.setImageResource(Utilies.getTeamCrestByTeamName(
-                cursor.getString(COL_HOME)));
-        mHolder.away_crest.setImageResource(Utilies.getTeamCrestByTeamName(
-                cursor.getString(COL_AWAY)
-        ));
+
+        mHolder.home_crest.setImageResource(Utilies.getTeamCrestByTeamName(home));
+        mHolder.home_crest.setContentDescription(context.getString(R.string.home_name_dynamic_description) + home);
+
+        mHolder.away_crest.setImageResource(Utilies.getTeamCrestByTeamName(away));
+        mHolder.away_crest.setContentDescription(context.getString(R.string.home_name_dynamic_description) + away);
+
         //Log.v(FetchScoreTask.LOG_TAG,mHolder.home_name.getText() + " Vs. " + mHolder.away_name.getText() +" id " + String.valueOf(mHolder.match_id));
         //Log.v(FetchScoreTask.LOG_TAG,String.valueOf(detail_match_id));
         LayoutInflater vi = (LayoutInflater) context.getApplicationContext()

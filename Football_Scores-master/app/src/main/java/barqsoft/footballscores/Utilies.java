@@ -65,6 +65,18 @@ public class Utilies
         }
     }
 
+    public static String getScores(String home, int home_goals, String away, int awaygoals)
+    {
+        if(home_goals < 0 || awaygoals < 0)
+        {
+            return " - ";
+        }
+        else
+        {
+            return home + " " + String.valueOf(home_goals) + ", " + away + String.valueOf(awaygoals);
+        }
+    }
+
     public static int getTeamCrestByTeamName (String teamname)
     {
         if (teamname==null){return R.drawable.no_icon;}
