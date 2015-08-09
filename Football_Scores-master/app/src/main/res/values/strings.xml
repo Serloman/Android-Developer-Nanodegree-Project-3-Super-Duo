@@ -49,4 +49,6 @@
     <string name="date_dynamic_description">The match date is </string>
 
     <string name="share_match_info">Share match info</string>
+
+    <string name="todays_matches">Today\'s matches</string>
 </resources>
