@@ -113,7 +113,8 @@ public class myFetchService extends IntentService
             if (JSON_data != null) {
                 //This bit is to check if the data contains any matches. If not, we call processJson on the dummy data
                 JSONArray matches = new JSONObject(JSON_data).getJSONArray("fixtures");
-                if (matches.length() == 0) {
+                if (matches.length() == 0)
+                {
                     //if there is no data, call the function on dummy data
                     //this is expected behavior during the off season.
                     processJSONdata(getString(R.string.dummy_data), getApplicationContext(), false);
@@ -134,6 +135,8 @@ public class myFetchService extends IntentService
     }
     private void processJSONdata (String JSONdata,Context mContext, boolean isReal)
     {
+        Log.d("JSONdata", JSONdata);
+
         //JSON data
         final String SERIE_A = "357";
         final String PREMIER_LEGAUE = "354";
@@ -178,7 +181,7 @@ public class myFetchService extends IntentService
                 League = match_data.getJSONObject(LINKS).getJSONObject(SOCCER_SEASON).
                         getString("href");
                 League = League.replace(SEASON_LINK,"");
-/** /   // Show all data for development purposes
+/** /    // Show all data for development purposes
                 if(     League.equals(PREMIER_LEGAUE)      ||
                         League.equals(SERIE_A)             ||
                         League.equals(CHAMPIONS_LEAGUE)    ||
