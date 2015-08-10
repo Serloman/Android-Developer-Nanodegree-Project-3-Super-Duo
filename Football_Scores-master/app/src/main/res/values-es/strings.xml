@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Resultados de Fútbol</string>
+    <string name="hello_world">Hola Mundo!</string>
+    <string name="action_settings">Opciones</string>
+    <string name="test_text">Prueba</string>
+    <string name="today">Hoy</string>
+    <string name="yesterday">Ayer</string>
+    <string name="tomorrow">Mañana</string>
+    <string name="champions_league">UEFA Champions League</string>
+    <string name="bundesliga">Bundesliga</string>
+    <string name="premierleague">Premier League</string>
+    <string name="primeradivison">Primera Division</string>
+    <string name="seriaa">Serie A</string>
+    <string name="matchday_text">Día del partido</string>
+    <string name="group_stage_text">Fase de grupos</string>
+    <string name="first_knockout_round">Primera eliminatoria</string>
+    <string name="quarter_final">Cuartos de final</string>
+    <string name="semi_final">Semi Finales</string>
+    <string name="final_text">Final</string>
+    <string name="share_text">Compartir</string>
+    <string name="about">Acerca de</string>
+    <string name="title_activity_about">Acerca de</string>
+    <string name="about_text">
+        Esta aplicación ofrece los resultados de los partidos de las siguentes ligas: Premier League,Seria A,Bundesliga,Primera Division
+        y la Uefa Champions League.
+        Todos los datos son adquiridos a través de la API gratuita de football-data.org.
+        Todos los logos han sifo adquiridos de http://hdlogo.wordpress.com/ previa solicitud de los dueños.
+        La versión original de esta aplicación fue creada por Yahia Khalid Ibn El Walid Ahmed, y una versión modificada es ofrecida a los estudiantes del programa de Android Nanodegree de Udacity
+        Para reportar algún error o sugerencia, no dudes en enviar un mensaje al desarrollador original y.k.ibnelwalid@gmail.com.
+
+        Esta aplicación es una evrsión modificada acorde a las exigencias del programa de Android Nanodegree.
+    </string>
+    <string name="widget_text">Probablemente esto sea un widget</string>
+
+    <string name="home_crest_description">El escudo del equipo local.</string>
+    <string name="home_name_description">El nombre del equipo local.</string>
+    <string name="home_name_dynamic_description">El equipo local es </string>
+
+    <string name="away_crest_description">El escudo del equipo visitante.</string>
+    <string name="away_name_description">El nombre del equipo visitante.</string>
+    <string name="away_name_dynamic_description">El equipo visitante es </string>
+
+    <string name="score_description">El resultado del partido</string>
+    <string name="date_description">La fecha del partido</string>
+    <string name="date_dynamic_description">La hora del partido es </string>
+
+    <string name="share_match_info">Compartir la información del partido</string>
+
+    <string name="todays_matches">Partidos de hoy</string>
+</resources>

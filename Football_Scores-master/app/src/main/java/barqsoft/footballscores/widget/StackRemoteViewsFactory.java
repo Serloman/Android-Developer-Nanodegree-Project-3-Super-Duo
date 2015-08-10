@@ -85,7 +85,7 @@ public class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
         rv.setTextColor(R.id.away_goals, Color.BLACK);
         rv.setTextColor(R.id.score_match, Color.BLACK);
 
-        Log.d("StackRemoteViewsFactory", match.toString());
+//        rv.setContentDescription(R.id.home_name, Utilies.getScores(match.homeName, match.homeGoals, match.awayName, match.awayGoals));
 
         return rv;
     }
