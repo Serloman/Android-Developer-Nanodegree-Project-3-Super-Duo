@@ -96,7 +96,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     eanData="978"+eanData;
                 }
                 if(eanData.length()<13){
-                    clearFields();
+//                    clearFields();
                     return;
                 }
 
@@ -219,10 +219,16 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         else
         subtitle.setVisibility(View.GONE);
 
+        TextView authorsTextView = ((TextView) rootView.findViewById(R.id.authors));
+        authorsTextView.setLines(1);
+        authorsTextView.setText("");
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+        if(authors!=null){
+            String[] authorsArr = authors.split(",");
+            authorsTextView.setLines(authorsArr.length);
+            authorsTextView.setText(authors.replace(",","\n"));
+        }
+
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
             ImageView cover = (ImageView) rootView.findViewById(R.id.fullBookCover);
@@ -279,6 +285,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     private void showBookSnack(final String bookTitle, final String eanData){
+        if(getActivity()==null)
+            return;
+
         String message = getString(R.string.book_added);
 
         Snackbar bar = Snackbar.make(rootView, message, Snackbar.LENGTH_INDEFINITE)

@@ -14,7 +14,8 @@ public class AddBookActivity extends AppCompatActivity {
 
         setContentView(R.layout.add_book_activity);
 
-        init();
+        if(savedInstanceState==null)
+            init();
     }
 
     private void init(){

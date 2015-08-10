@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -42,8 +43,18 @@ public class BookService extends IntentService {
 
     public static final String EAN = "it.jaschke.alexandria.services.extra.EAN";
 
+    private Handler handler;
+
     public BookService() {
         super("Alexandria");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        handler = new Handler();
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -98,7 +109,7 @@ public class BookService extends IntentService {
         try{
             checkNetwork();
         } catch (IOException e) {
-            Toast.makeText(getBaseContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            notifyUser();
             return;
         }
 
@@ -211,6 +222,15 @@ public class BookService extends IntentService {
         catch (JSONException e) {
             Log.e(LOG_TAG, "Error ", e);
         }
+    }
+
+    private void notifyUser(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getBaseContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void writeBackBook(String ean, String title, String subtitle, String desc, String imgUrl) {
